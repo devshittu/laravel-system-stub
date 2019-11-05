@@ -1,5 +1,5 @@
 # Laravel System Stub
-This is a project stub for any kind of Multi-actor system written in Laravel php framework.
+This is a project stub for any kind of **multi-actor** system written in Laravel php framework.
 The procedure for use is as follow:
 1. Fork this repo
 2. Create and cd into a directory for another project name it as you wish.
