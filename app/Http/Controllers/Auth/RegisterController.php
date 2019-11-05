@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\AcademicClass;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\UserAdminProfile;
+use App\UserCandidateProfile;
+use App\UserStaffProfile;
+use App\UserStudentProfile;
+use App\Utils\Constants;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -49,9 +57,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'string'],
+            'type' => ['required', 'string'],
+            'first_name' => ['required', 'string', 'max:50'],
+            'last_name' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 
@@ -63,10 +74,93 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        /*
+         * register user to database using Object Relational Model
+         * */
+        $userType = $data['type'];
+        $make_reg_code = get_reg_code_prefix($userType) . strtoupper(Str::random(5));
+        $currentSessionId = \App\SystemSetting::find(1)->academic_session_id;
+
+//        dump($data);
+
+        DB::beginTransaction();
+
+        $insertUser = User::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'gender' => $data['gender'],
+            'type' => $userType,
+            'reg_code' => $make_reg_code,
+            'date_of_birth' => $data['dob'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        $newUserId = $insertUser->id;
+
+        if(!$insertUser) DB::rollBack();
+
+        if ($userType == Constants::DBCV_USER_TYPE_CANDIDATE) {
+
+            $createUserProfile = UserCandidateProfile::create([
+                'user_id' => $newUserId,
+                Constants::DBC_ACAD_CLASS_ID => $data[Constants::DBC_ACAD_CLASS_ID],
+                Constants::DBC_ACAD_SESS_ID => $currentSessionId,
+            ]);
+
+        }
+
+        elseif ($userType == Constants::DBCV_USER_TYPE_STUDENT) {
+
+            $createUserProfile = UserStudentProfile::create([
+                'user_id' => $newUserId,
+//                Constants::DBC_CLASS_ID => 1,
+//                Constants::DBC_ACAD_SESS_ID => $currentSessionId,
+            ]);
+
+        }
+
+
+        elseif ($userType == Constants::DBCV_USER_TYPE_STAFF) {
+            $createUserProfile = true;
+            $createUserProfile = UserStaffProfile::create([
+                'user_id' => $newUserId,
+            ]);
+
+        }
+
+        elseif ($userType == Constants::DBCV_USER_TYPE_ADMIN) {
+
+            $createUserProfile = UserAdminProfile::create([
+                'user_id' => $newUserId,
+//                Constants::DBC_CLASS_ID => 1,
+//                Constants::DBC_ACAD_SESS_ID => $currentSessionId,
+            ]);
+
+        }
+
+
+        if(!$createUserProfile) DB::rollBack();
+
+
+        DB::commit();
+
+        return  $insertUser;
     }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+
+        $data = [
+            'academic_classes' => AcademicClass::where(Constants::DBC_CAN_APPLY, true)->get(),
+        ];
+        return view('auth.register', $data);
+    }
+
+
 }

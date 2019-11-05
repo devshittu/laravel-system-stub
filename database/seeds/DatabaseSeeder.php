@@ -12,5 +12,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+
+
+        $this->call(AcademicSessionsTableSeeder::class);
+        $this->call(SystemSettingsTableSeeder::class);
+
+        factory('App\UserAdminProfile', 2)->create();
+        factory('App\UserCandidateProfile', 5)->create();
+        factory('App\UserStaffProfile', 5)->create();
+        factory('App\UserStudentProfile', 5)->create();
+
     }
 }

@@ -16,12 +16,26 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) use ($autoIncrement) {
+
+    $allowedUserTypes = \App\Utils\Constants::AV_USER_TYPE;
+    $avAtRand = array_rand($allowedUserTypes);
+    $allowedGenderTypes = \App\Utils\Constants::AV_GENDER_TYPE;
+    $avGenderAtRand = array_rand($allowedGenderTypes);
+    $selectedUserType = $allowedUserTypes[$avAtRand];
+    $selectedGenderType = $allowedGenderTypes[$avGenderAtRand];
+    $regCodePrefix = get_reg_code_prefix($selectedUserType);
+
     return [
-        'name' => $faker->name,
+        'first_name' => $faker->firstName($selectedGenderType),
+        'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'remember_token' => Str::random(10),
+        'type' => $selectedUserType,
+        'gender' => $selectedGenderType,
+        'reg_code' => $regCodePrefix . strtoupper(Str::random(5)),
+        \App\Utils\Constants::DBC_USER_DOB => $faker->date('Y-m-d') ,
     ];
 });
