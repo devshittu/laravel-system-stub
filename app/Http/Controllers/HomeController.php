@@ -51,9 +51,9 @@ class HomeController extends Controller
             $data['users'] = $student;
             $data['user'] = $user;
             $data['staffs'] = UserStaffProfile::all();
-            $data['academic_classes'] = AcademicClass::all();
+//            $data['academic_classes'] = AcademicClass::all();
             $data['academic_sessions'] = AcademicSession::all();
-            $data['academic_terms'] = AcademicTerm::all();
+//            $data['academic_terms'] = AcademicTerm::all();
         }
         elseif (Auth::user()->type === 'candidate') {
             $profile = UserCandidateProfile::where('user_id', Auth::id())->first();

@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Share settings to all views
-//        $settings = SystemSetting::find(1) ?? new stdClass();
-//        View::share('settings', $settings);
+        $settings = SystemSetting::find(1) ?? new stdClass();
+        View::share('settings', $settings);
     }
 }

@@ -6,7 +6,7 @@
 
 
 
-    @if ($user['type'] === 'admin')
+    @if (Auth::user()->type === 'admin')
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-        @elseif ($user['type'] === 'student')
+        @elseif (Auth::user()->type === 'student')
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </div>
-        @elseif ($user['type'] === 'staff')
+        @elseif (Auth::user()->type === 'staff')
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -117,14 +117,14 @@
                                         {{ session('status') }}
                                     </div>
                                 @endif
-                                {{ $user }}
+                                {{ Auth::user() ?? '' }}
                                 You are logged in as student!
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    @elseif ($user['type'] === 'candidate')
+    @elseif (Auth::user()->type === 'candidate')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -156,27 +156,27 @@
                             <tbody>
                             <tr>
                                 <th scope="row">REG NO</th>
-                                <td>{{ $user['reg_code']}}</td>
+                                <td>{{ Auth::user()->reg_code }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Email</th>
-                                <td>{{ $user['email']}}</td>
+                                <td>{{ Auth::user()->email }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Full Name</th>
-                                <td>{{ $user['first_name'] . ' ' .  $user['last_name']}}</td>
+                                <td>{{ Auth::user()->first_name  . ' ' .  Auth::user()->last_name }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Gender</th>
-                                <td>{{ $user['gender']}}</td>
+                                <td>{{ Auth::user()->gender }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">User Type</th>
-                                <td>{{ $user['type']}}</td>
+                                <td>{{ Auth::user()->type}}</td>
                             </tr>
                             {{--<tr>
                                 <th scope="row"></th>
-                                <td>{{ $user['']}}</td>
+                                <td>{{ Auth::user()-> }}</td>
                             </tr>--}}
                             </tbody>
                         </table>
@@ -196,15 +196,15 @@
                             <tbody>
                             <tr>
                                 <th scope="row">Exam Date</th>
-                                <td>{{ $user['']}} 28-Dec-2019</td>
+                                <td>{{ Auth::user()->type }} 28-Dec-2019</td>
                             </tr>
                             <tr>
                                 <th scope="row">Time</th>
-                                <td>{{ $user['']}} 12:00 pm</td>
+                                <td>{{ Auth::user()->type }} 12:00 pm</td>
                             </tr>
                             {{--<tr>
                                 <th scope="row"></th>
-                                <td>{{ $user['']}}</td>
+                                <td>{{ Auth::user()-> }}</td>
                             </tr>--}}
                             </tbody>
                         </table>

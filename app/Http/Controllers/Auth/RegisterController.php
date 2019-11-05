@@ -157,7 +157,8 @@ class RegisterController extends Controller
     {
 
         $data = [
-            'academic_classes' => AcademicClass::where(Constants::DBC_CAN_APPLY, true)->get(),
+//            'academic_classes' => AcademicClass::where(Constants::DBC_CAN_APPLY, true)->get(),
+            'academic_classes' => [],
         ];
         return view('auth.register', $data);
     }

@@ -190,9 +190,9 @@
                                                 <th scope="row">{{ ++$key }}</th>
                                                 <td>{{ $staff->user->full_name }}</td>
                                                 <td>
-                                                    @foreach($staff->staff_classes as $class)
-                                                        {{ $class->academic_class->code_name. ', ' }}
-                                                    @endforeach
+                                                    {{--@foreach($staff->staff_classes as $class)--}}
+                                                        {{--{{ $class->academic_class->code_name. ', ' }}--}}
+                                                    {{--@endforeach--}}
                                                 </td>
                                                 <td>
 
@@ -230,9 +230,9 @@
                                                                             <select class="form-control"
                                                                                     name="duty[]"
                                                                                     id="duty1" required>
-                                                                                @foreach ($academic_classes as $c)
-                                                                                    <option value="{{ $c->id }}">{{ $c->title }}</option>
-                                                                                @endforeach
+                                                                                {{--@foreach ($academic_classes as $c)--}}
+                                                                                    {{--<option value="{{ $c->id }}">{{ $c->title }}</option>--}}
+                                                                                {{--@endforeach--}}
                                                                             </select>
                                                                         </div>
                                                                         <div class="form-group">
@@ -242,9 +242,9 @@
                                                                                     name="duty[]"
                                                                                     id="duty2" required>
                                                                                 <option value="">Select</option>
-                                                                                @foreach ($academic_classes as $c)
-                                                                                    <option value="{{ $c->id }}">{{ $c->title }}</option>
-                                                                                @endforeach
+                                                                                {{--@foreach ($academic_classes as $c)--}}
+                                                                                    {{--<option value="{{ $c->id }}">{{ $c->title }}</option>--}}
+                                                                                {{--@endforeach--}}
                                                                             </select>
                                                                         </div>
 
@@ -287,137 +287,19 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if (count($academic_classes) == 0)
+                                    {{--@if (count($academic_classes) == 0)--}}
                                         <p>No user exist </p>
-                                    @else
-                                        @foreach ($academic_classes as $c)
-                                            <tr>
-                                                <th scope="row">{{ $c->id }}</th>
-                                                <td>{{ $c->title }}</td>
-                                                <td> {{ $c->code_name }}</td>
-                                                {{--<td>
+                                    {{--@else--}}
+                                        {{--@foreach ($academic_classes as $c)--}}
+                                            {{--<tr>--}}
+                                                {{--<th scope="row">{{ $c->id }}</th>--}}
+                                                {{--<td>{{ $c->title }}</td>--}}
+                                                {{--<td> {{ $c->code_name }}</td>--}}
+                                            {{--</tr>--}}
+                                        {{--@endforeach--}}
+                                        <p>Classes exist</p>
 
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                            data-toggle="modal"
-                                                            data-target="#deleteUserModal{{ $u->id }}"
-                                                            @if(($u->id === Auth::id()) || $u->type === \App\Utils\Constants::DBCV_USER_TYPE_ADMIN) disabled @endif>
-                                                        Delete
-                                                    </button>
-                                                    <div class="modal fade" id="deleteUserModal{{ $u->id }}"
-                                                         tabindex="-1" role="dialog"
-                                                         aria-labelledby="deleteUserModalTitle{{ $u->id }}"
-                                                         aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-scrollable"
-                                                             role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="deleteUserModalTitle{{ $u->id }}">
-                                                                        Confirm</h5>
-                                                                    <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <p>This operation cannot be undone. <br> Are you
-                                                                        sure to delete
-                                                                        <strong> {{ $u->full_name }}</strong>?</p>
-                                                                    <form id="delete-user-form-{{ $u->id }}"
-                                                                          action="{{ route('delete_user', ['user_id' => $u->id]) }}"
-                                                                          method="POST">
-                                                                        @csrf
-                                                                    </form>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Close
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-danger"
-                                                                            onclick="event.preventDefault();
-                                                                                    document.getElementById('delete-user-form-{{ $u->id }}' ).submit();">
-                                                                        Delete
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                @if ($u->type === 'candidate')
-                                                    --}}{{--<a href="{{ $u->id }}" class="btn btn-dark btn-sm"> View</a>--}}{{--
-                                                    <!-- Button trigger modal -->
-                                                        <button type="button" class="btn btn-dark btn-sm"
-                                                                data-toggle="modal"
-                                                                data-target="#candidateModal{{ $u->id }}">
-                                                            Update Score
-                                                        </button>
-                                                        <!-- Modal For adding score -->
-                                                        <div class="modal fade" id="candidateModal{{ $u->id }}"
-                                                             tabindex="-1" role="dialog"
-                                                             aria-labelledby="candidateModalTitle{{ $u->id }}"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-scrollable"
-                                                                 role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="candidateModalTitle{{ $u->id }}"> {{ $u->full_name }}</h5>
-                                                                        <button type="button" class="close"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form id="update-score-form-{{ $u->id }}"
-                                                                              action="{{ route('update_candidate_score', ['user_id' => $u->id]) }}"
-                                                                              method="POST">
-                                                                            @csrf
-
-                                                                            <div class="form-group">
-                                                                                <label for="score">Score</label>
-                                                                                <input type="number" name="score"
-                                                                                       value="{{ $u->candidate_profile->exam_score }}"
-                                                                                       oninput="checkScore(this, {{ $u->id }})"
-                                                                                       class="form-control" id="score"
-                                                                                       placeholder="0-100">
-                                                                                <input type="hidden"
-                                                                                       name="{{ \App\Utils\Constants::DBC_IS_ADMITTED }}"
-                                                                                       value="0" class="form-control"
-                                                                                       id="is_admitted{{$u->id}}">
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">Close
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-primary"
-                                                                                onclick="event.preventDefault();
-                                                                                        document.getElementById('update-score-form-{{ $u->id }}' ).submit();">
-                                                                            Save
-                                                                        </button>
-                                                                        <button id="saveAndOfferAdmission{{$u->id}}"
-                                                                                type="button" class="btn btn-success"
-                                                                                style="display: none"
-                                                                                onclick="event.preventDefault();
-                                                                                        document.getElementById('update-score-form-{{ $u->id }}' ).action = '{{ route('update_candidate_score', ['user_id' => $u->id, 'offer' => 1]) }}';
-                                                                                        document.getElementById('update-score-form-{{ $u->id }}' ).submit();">
-                                                                            Save & Offer Admission
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    @endif
-
-
-                                                </td>--}}
-                                            </tr>
-                                        @endforeach
-
-                                    @endif
+                                    {{--@endif--}}
                                     </tbody>
                                 </table>
 

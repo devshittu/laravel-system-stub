@@ -305,12 +305,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/home') }}">
-                {{--                    {{ config('app.name', 'Laravel ') }}--}}
-                @if (is_null($settings->school_name))
-                    Laravel
-                @else
-                    {{ $settings->school_name }}
-                @endif
+                    {{ $settings->system_name ?? 'System Stub Title' }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -323,9 +318,6 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <span class="nav-link">Session: <strong>{{ __($settings->academic_session->title ) }}</strong></span>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link">Term: <strong>{{ __($settings->academic_term->title ) }}</strong></span>
                     </li>
 
                 </ul>
@@ -346,7 +338,7 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Hi, {{ Auth::user()->first_name }}  {{ Auth::user()->last_name }}
+                                Hi, {{ Auth::user()->full_name }}
                                 ({{ ucfirst(Auth::user()->type) }}) <span class="caret"></span>
                             </a>
 

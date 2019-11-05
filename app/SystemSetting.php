@@ -16,11 +16,5 @@ class SystemSetting extends Model
         return $this->belongsTo('App\AcademicSession');
     }
 
-    /**
-     * Get the academic term that owns the setting.
-     */
-    public function academic_term()
-    {
-        return $this->belongsTo('App\AcademicTerm');
-    }
+
 }
